@@ -3,743 +3,1179 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="TypeSprint Pro - Free typing speed tests, lessons, games and smart typing analytics.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0b1020">
-<title>TypeSprint Pro | Master Your Typing</title>
+<meta name="description" content="TypeSprint is a free online typing speed test. Improve your typing speed, accuracy and keyboard skills with smart practice tools.">
+<title>TypeSprint — Master Your Typing</title>
+
 <style>
-:root{
-  --bg:#0b1020;--panel:#141e33;--panel2:#1b2942;
-  --text:#f4f7ff;--muted:#9baac3;--accent:#7894ff;
-  --good:#31d69b;--bad:#ff657d;--border:#ffffff12;
+:root {
+  --bg:#0b1020;
+  --panel:#141d32;
+  --panel2:#192640;
+  --text:#f4f7ff;
+  --muted:#9aa9c4;
+  --accent:#718cff;
+  --accent2:#9b7cff;
+  --good:#35d6a0;
+  --bad:#ff657d;
+  --border:rgba(155,175,220,.13);
+  --shadow:0 15px 40px rgba(0,0,0,.22);
 }
-*{box-sizing:border-box}
-body{margin:0;padding:16px;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;transition:.2s}
-body.light{--bg:#edf1fa;--panel:#fff;--panel2:#f1f4fc;--text:#172033;--muted:#65718a;--border:#00000015}
-body.purple{--bg:#171024;--panel:#281b3c;--panel2:#36244e;--text:#fff;--muted:#c1addb;--accent:#bd85ff}
-body.green{--bg:#0d211c;--panel:#18352c;--panel2:#224538;--text:#f1fff8;--muted:#a6c8b8;--accent:#42c99b}
-button,input,select,textarea{font:inherit}
-button{border:0;border-radius:10px;padding:11px 15px;background:var(--accent);color:white;font-weight:700;cursor:pointer;transition:.18s}
-button:hover{filter:brightness(1.13);transform:translateY(-1px)}
-button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border)}
-button:disabled{opacity:.45;cursor:not-allowed;transform:none}
-input,select,textarea{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:11px;min-width:0}
-textarea{width:100%;min-height:120px;resize:vertical;line-height:1.7}
-.app{max-width:1150px;margin:auto}
-header{text-align:center;padding:22px 10px}
-.logo{font-size:38px;font-weight:900;letter-spacing:-1.5px;color:var(--accent)}
-header p{color:var(--muted);margin:7px}
-.panel{background:var(--panel);padding:19px;border-radius:16px;margin:14px 0;border:1px solid var(--border)}
-.panel h2,.panel h3{margin-top:0}
-.controls,.nav{display:flex;gap:9px;flex-wrap:wrap}
-.controls>*{flex:1}
-.nav{margin:15px 0}
-.nav button{flex:1;min-width:100px}
-.small{font-size:13px;color:var(--muted)}
-.muted{color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-.stat{background:var(--bg);padding:15px 7px;border-radius:12px;text-align:center;border:1px solid var(--border)}
-.stat strong{display:block;color:var(--accent);font-size:26px;margin-top:7px}
-.stat span{font-size:12px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
-.item{padding:12px;border-bottom:1px solid var(--border)}
-.hidden{display:none!important}
-#targetPanel{position:sticky;top:8px;z-index:10;box-shadow:0 8px 24px #0004}
-#target{font-size:20px;line-height:2;overflow-wrap:anywhere;min-height:90px;max-height:190px;overflow-y:auto;padding:9px;scroll-behavior:smooth}
-.correct{color:var(--good)}
-.wrong{color:var(--bad);background:#ff657d22;border-radius:3px}
-.current{border-bottom:2px solid var(--accent)}
-.progress{height:9px;background:var(--bg);border-radius:20px;overflow:hidden;margin-top:12px}
-#bar{height:100%;width:0;background:var(--good);transition:width .2s}
-#keyboard{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
-.key{background:var(--bg);padding:9px 2px;text-align:center;border-radius:6px;font-size:12px;border:1px solid var(--border)}
-.key.active{background:var(--accent);color:white}
-.weak-keys{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.weak-key{background:var(--bg);border:1px solid var(--bad);border-radius:8px;padding:7px 12px;font-weight:bold}
-.lesson-card,.game-card{background:var(--panel2);padding:16px;border-radius:12px;border:1px solid var(--border)}
-.lesson-card h3{margin-top:0}
-.lesson-card button{margin-top:10px}
-#calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.day{padding:11px 2px;text-align:center;border-radius:7px;background:var(--bg);font-size:12px}
-.day.done{background:#218a67;color:white}
-.badge{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:12px;margin:3px}
-#chart{width:100%;height:230px;background:var(--bg);border-radius:10px}
-#gameText{font-size:20px;line-height:1.8;padding:12px;background:var(--bg);border-radius:10px}
-footer{text-align:center;color:var(--muted);padding:24px}
-@media(max-width:700px){
- body{padding:8px}.stats{grid-template-columns:repeat(2,1fr)}
- #target{font-size:17px}.logo{font-size:31px}
- #keyboard{grid-template-columns:repeat(5,1fr)}
- .panel{padding:14px}
+
+* { box-sizing:border-box; }
+
+html { scroll-behavior:smooth; }
+
+body {
+  margin:0;
+  padding:20px;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(113,140,255,.13),transparent 32%),
+    radial-gradient(circle at 90% 10%,rgba(155,124,255,.10),transparent 28%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  line-height:1.6;
+}
+
+body.light {
+  --bg:#edf1fa;
+  --panel:#fff;
+  --panel2:#f5f7ff;
+  --text:#182238;
+  --muted:#68758e;
+  --border:rgba(40,60,100,.12);
+  --shadow:0 12px 30px rgba(30,50,90,.08);
+}
+
+body.purple {
+  --bg:#150f24;
+  --panel:#211832;
+  --panel2:#2a2040;
+  --accent:#bd85ff;
+  --accent2:#e08bff;
+}
+
+body.green {
+  --bg:#0b1c18;
+  --panel:#142b24;
+  --panel2:#1c392f;
+  --accent:#42c99b;
+  --accent2:#8ce6bd;
+}
+
+button,input,select,textarea { font:inherit; }
+
+button {
+  border:0;
+  border-radius:11px;
+  padding:11px 16px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:white;
+  cursor:pointer;
+  font-weight:700;
+  transition:.2s ease;
+}
+
+button:hover {
+  transform:translateY(-2px);
+  filter:brightness(1.1);
+}
+
+button:active { transform:scale(.98); }
+
+button.secondary {
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+input,select,textarea {
+  background:var(--bg);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:12px;
+  outline:none;
+}
+
+input:focus,select:focus,textarea:focus {
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(113,140,255,.12);
+}
+
+.app { max-width:1120px; margin:auto; }
+
+header {
+  text-align:center;
+  padding:32px 12px 24px;
+}
+
+.logo {
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:var(--accent);
+  font-size:38px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+  margin:0;
+}
+
+.logo-icon {
+  display:inline-grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:white;
+  font-size:25px;
+  box-shadow:0 8px 24px rgba(113,140,255,.25);
+}
+
+header p { color:var(--muted); margin:7px 0; }
+
+.tagline {
+  display:inline-block;
+  padding:6px 13px;
+  border:1px solid var(--border);
+  border-radius:30px;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+}
+
+.panel {
+  background:linear-gradient(145deg,var(--panel),var(--panel2));
+  border:1px solid var(--border);
+  padding:20px;
+  border-radius:18px;
+  margin:15px 0;
+  box-shadow:var(--shadow);
+}
+
+.panel h2,.panel h3 { margin-top:0; }
+
+.controls {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.controls input,.controls select { flex:1; min-width:135px; }
+
+.nav {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin:20px 0;
+}
+
+.nav button {
+  background:var(--panel);
+  color:var(--muted);
+  border:1px solid var(--border);
+  padding:14px 8px;
+}
+
+.nav button:hover {
+  color:var(--text);
+  border-color:var(--accent);
+}
+
+.section-label {
+  color:var(--accent);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.stat {
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 8px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.stat strong {
+  display:block;
+  color:var(--text);
+  font-size:29px;
+  margin-top:5px;
+  font-weight:800;
+}
+
+.stat.primary strong { color:var(--accent); }
+
+.progress {
+  height:8px;
+  background:var(--bg);
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:17px;
+}
+
+#bar {
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--accent),var(--good));
+  transition:width .2s;
+}
+
+#targetPanel {
+  /* Intentionally NOT sticky. The whole panel scrolls with the page. */
+  position:static !important;
+  top:auto !important;
+  z-index:auto !important;
+  box-shadow:var(--shadow);
+}
+
+#target {
+  font-size:19px;
+  line-height:2;
+  overflow-wrap:anywhere;
+  min-height:90px;
+  max-height:190px;
+  overflow-y:auto;
+  padding:12px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  scroll-behavior:smooth;
+}
+
+#typing {
+  width:100%;
+  min-height:125px;
+  resize:vertical;
+  font-size:17px;
+  line-height:1.7;
+}
+
+.correct { color:var(--good); }
+.wrong { color:var(--bad); background:rgba(255,101,125,.12); }
+.current { border-bottom:2px solid var(--accent); }
+
+.hidden { display:none !important; }
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:14px;
+}
+
+.item {
+  padding:12px;
+  border-bottom:1px solid var(--border);
+}
+
+.small { font-size:13px; color:var(--muted); }
+
+#calendar {
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.day {
+  padding:12px 3px;
+  text-align:center;
+  border-radius:9px;
+  background:var(--bg);
+  font-size:12px;
+}
+
+.day.done { background:#218a67; color:white; }
+
+#keyboard {
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:5px;
+}
+
+.key {
+  background:var(--bg);
+  border:1px solid var(--border);
+  padding:9px 2px;
+  text-align:center;
+  border-radius:7px;
+  font-size:12px;
+}
+
+.key.active {
+  background:var(--accent);
+  color:white;
+}
+
+.coach-score { font-size:14px; color:var(--muted); margin:10px 0; }
+
+.weak-keys {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+
+.weak-key {
+  background:var(--bg);
+  border:1px solid var(--bad);
+  border-radius:8px;
+  padding:6px 12px;
+  font-weight:bold;
+}
+
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:30px 10px;
+  font-size:13px;
+}
+
+@media(max-width:700px) {
+  body { padding:10px; }
+  header { padding:20px 8px; }
+  .logo { font-size:31px; }
+  .nav { grid-template-columns:repeat(2,1fr); }
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .panel { padding:15px; }
+  #target { font-size:16px; }
+  #keyboard { grid-template-columns:repeat(5,1fr); }
+}
+
+@media(max-width:380px) {
+  .controls button { width:100%; }
 }
 </style>
 </head>
+
 <body>
 <div class="app">
 
 <header>
- <div class="logo">⌨️ TypeSprint <span style="font-size:15px">PRO</span></div>
- <p>Practice smarter. Type faster. Achieve more.</p>
- <p class="small">Your personal typing improvement platform</p>
+  <h1 class="logo"><span class="logo-icon">⌨</span> TypeSprint</h1>
+  <p>Practice smarter. Type faster. Achieve more.</p>
+  <span class="tagline">FREE ONLINE TYPING SPEED TEST</span>
 </header>
 
 <div class="panel">
- <div class="controls">
-  <input id="user" maxlength="20" placeholder="Your profile name">
-  <button onclick="saveProfile()">Save Profile</button>
-  <select id="theme" onchange="changeTheme()">
-   <option value="">Dark Theme</option>
-   <option value="light">Light Theme</option>
-   <option value="purple">Purple Theme</option>
-   <option value="green">Green Theme</option>
-  </select>
- </div>
- <p id="welcome" class="small">Welcome to TypeSprint Pro.</p>
+  <div class="controls">
+    <input id="user" placeholder="Enter your name" maxlength="20">
+    <button onclick="saveProfile()">Save Profile</button>
+    <select id="theme" onchange="changeTheme()">
+      <option value="">Dark Theme</option>
+      <option value="light">Light Theme</option>
+      <option value="purple">Purple Theme</option>
+      <option value="green">Green Theme</option>
+    </select>
+  </div>
+  <p class="small" id="welcome">Welcome! Create your local profile.</p>
 </div>
 
 <div class="nav">
- <button onclick="tab('test')">⌨️ Test</button>
- <button onclick="tab('academy')">🎓 Academy</button>
- <button onclick="tab('games')">🎮 Games</button>
- <button onclick="tab('challenge')">🏆 Challenge</button>
- <button onclick="tab('analytics')">📊 Analytics</button>
- <button onclick="tab('profile')">👤 Profile</button>
+  <button onclick="tab('test')">⌨ Typing Test</button>
+  <button onclick="tab('challenge')">🏆 Challenge</button>
+  <button onclick="tab('analytics')">📊 Analytics</button>
+  <button onclick="tab('profile')">👤 Profile</button>
 </div>
 
-<!-- TYPING TEST -->
 <section id="test">
- <div class="panel">
-  <h3>Typing Test Settings</h3>
-  <div class="controls">
-   <select id="level">
-    <option value="easy">Beginner</option>
-    <option value="medium" selected>Intermediate</option>
-    <option value="hard">Advanced</option>
-   </select>
-   <select id="duration">
-    <option value="15">15 Seconds</option>
-    <option value="30">30 Seconds</option>
-    <option value="60" selected>60 Seconds</option>
-    <option value="120">120 Seconds</option>
-   </select>
-   <select id="mode">
-    <option value="normal">Normal</option>
-    <option value="numbers">Numbers</option>
-    <option value="punctuation">Punctuation</option>
-    <option value="coding">Coding</option>
-    <option value="blind">Blind Typing</option>
-    <option value="accuracy">Accuracy First</option>
-   </select>
-  </div>
-  <div class="controls" style="margin-top:12px">
-   <button onclick="start()">Start / Restart</button>
-   <button class="secondary" onclick="pause()">Pause / Resume</button>
-   <button class="secondary" onclick="fullScreen()">Fullscreen</button>
-   <button class="secondary" onclick="toggleSound()">Sound: <span id="soundState">ON</span></button>
-  </div>
- </div>
 
- <div class="panel">
-  <div class="stats">
-   <div class="stat"><span>TIME</span><strong id="time">60</strong></div>
-   <div class="stat"><span>WPM</span><strong id="wpm">0</strong></div>
-   <div class="stat"><span>RAW WPM</span><strong id="raw">0</strong></div>
-   <div class="stat"><span>ACCURACY</span><strong id="acc">100%</strong></div>
-   <div class="stat"><span>ERRORS</span><strong id="errors">0</strong></div>
-  </div>
-  <div class="progress"><div id="bar"></div></div>
-  <p id="status" class="small">Press Start and begin typing.</p>
- </div>
-
- <div class="panel" id="targetPanel">
-  <h3>WHAT TO TYPE</h3>
-  <div id="target"></div>
-  <p id="blind" class="small"></p>
- </div>
-
- <div class="panel">
-  <h3>TYPE HERE</h3>
-  <textarea id="typing" placeholder="Start typing here..." disabled spellcheck="false" autocapitalize="off"></textarea>
-  <div class="controls" style="margin-top:10px">
-   <button class="secondary" onclick="customText()">Custom Text</button>
-   <button class="secondary" onclick="review()">Mistake Review</button>
-   <button class="secondary" onclick="certificate()">Certificate</button>
-   <button class="secondary" onclick="downloadResult()">Export CSV</button>
-  </div>
- </div>
-
- <div class="grid">
   <div class="panel">
-   <h3>⌨️ Keyboard & Finger Guide</h3>
-   <p id="finger" class="small">Start typing to see finger guidance.</p>
-   <div id="keyboard"></div>
+    <p class="section-label">01 — Configure</p>
+    <h3>Test Settings</h3>
+    <div class="controls">
+      <select id="level">
+        <option value="easy">Beginner</option>
+        <option value="medium" selected>Intermediate</option>
+        <option value="hard">Advanced</option>
+      </select>
+
+      <select id="duration">
+        <option value="15">15 Seconds</option>
+        <option value="30">30 Seconds</option>
+        <option value="60" selected>60 Seconds</option>
+        <option value="120">120 Seconds</option>
+      </select>
+
+      <select id="mode">
+        <option value="normal">Normal</option>
+        <option value="numbers">Numbers</option>
+        <option value="punctuation">Punctuation</option>
+        <option value="coding">Coding</option>
+        <option value="blind">Blind Typing</option>
+        <option value="accuracy">Accuracy First</option>
+      </select>
+    </div>
+
+    <div class="controls" style="margin-top:14px">
+      <button onclick="start()">▶ Start / Restart</button>
+      <button class="secondary" onclick="pause()">Ⅱ Pause / Resume</button>
+      <button class="secondary" onclick="fullScreen()">⛶ Fullscreen</button>
+      <button class="secondary" onclick="toggleSound()">Sound: <span id="soundState">ON</span></button>
+    </div>
   </div>
+
   <div class="panel">
-   <h3>🧠 Smart Coach</h3>
-   <div id="coach">Complete a test to receive personalized feedback.</div>
-   <div id="coachScore" class="coach-score small">Your typing analysis will appear here.</div>
-   <div id="weakKeys" class="weak-keys"></div>
-   <button class="secondary" onclick="practiceWeakKeys()">Practice My Weak Keys</button>
+    <p class="section-label">02 — Live Performance</p>
+    <div class="stats">
+      <div class="stat">TIME<strong id="time">60</strong></div>
+      <div class="stat primary">WPM<strong id="wpm">0</strong></div>
+      <div class="stat">ACCURACY<strong id="acc">100%</strong></div>
+      <div class="stat">ERRORS<strong id="errors">0</strong></div>
+    </div>
+    <div class="progress"><div id="bar"></div></div>
+    <p id="status" class="small">Press Start to begin your typing test.</p>
   </div>
- </div>
 
- <div class="panel">
-  <h3>Test Mistake Review</h3>
-  <div id="mistakes" class="small">No mistakes yet.</div>
- </div>
-</section>
-
-<!-- ACADEMY -->
-<section id="academy" class="hidden">
- <div class="panel">
-  <h2>🎓 Typing Academy</h2>
-  <p class="muted">Build your skills step by step. Choose a lesson to start.</p>
-  <div class="grid" id="lessons"></div>
- </div>
- <div class="panel">
-  <h3>Lesson Practice</h3>
-  <p id="lessonInfo" class="small">Choose a lesson above to begin.</p>
-  <button onclick="startLesson()">Start Selected Lesson</button>
- </div>
-</section>
-
-<!-- GAMES -->
-<section id="games" class="hidden">
- <div class="panel">
-  <h2>🎮 Typing Speed Game</h2>
-  <p>Type the displayed sentence before the timer runs out.</p>
-  <div class="stats">
-   <div class="stat"><span>TIME</span><strong id="gameTime">30</strong></div>
-   <div class="stat"><span>WPM</span><strong id="gameWpm">0</strong></div>
-   <div class="stat"><span>SCORE</span><strong id="gameScore">0</strong></div>
-   <div class="stat"><span>BEST</span><strong id="gameBest">0</strong></div>
+  <div class="panel" id="targetPanel">
+    <p class="section-label">03 — Typing Prompt</p>
+    <h3>WHAT TO TYPE</h3>
+    <div id="target"></div>
+    <p id="blind" class="small"></p>
   </div>
-  <div id="gameText" style="margin:15px 0">Press Start Game to begin!</div>
-  <button onclick="startGame()">Start Game</button>
-  <textarea id="gameInput" disabled placeholder="Type the sentence here..." style="margin-top:12px"></textarea>
-  <p id="gameStatus" class="small">Complete the sentence as accurately as possible.</p>
- </div>
+
+  <div class="panel">
+    <p class="section-label">04 — Your Turn</p>
+    <h3>TYPE HERE</h3>
+    <textarea id="typing" placeholder="Start typing here..." disabled spellcheck="false"></textarea>
+    <div class="controls" style="margin-top:12px">
+      <button class="secondary" onclick="customText()">Custom Text</button>
+      <button class="secondary" onclick="review()">Mistake Review</button>
+      <button class="secondary" onclick="certificate()">Get Certificate</button>
+      <button class="secondary" onclick="downloadResult()">Export CSV</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <p class="section-label">Learning Tool</p>
+      <h3>Finger Guide</h3>
+      <p id="finger" class="small">Start typing to see finger guidance.</p>
+      <div id="keyboard"></div>
+    </div>
+
+    <div class="panel">
+      <p class="section-label">Smart Assistance</p>
+      <h3>Typing Coach</h3>
+      <div id="coach">Complete a test to receive personalized tips.</div>
+      <div id="coachScore" class="coach-score">Your weak-key analysis will appear after a test.</div>
+      <div id="weakKeys" class="weak-keys"></div>
+      <button class="secondary" onclick="practiceWeakKeys()">Practice My Weak Keys</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Mistake Review</h3>
+    <div id="mistakes" class="small">No mistakes yet.</div>
+  </div>
 </section>
 
-<!-- CHALLENGE -->
 <section id="challenge" class="hidden">
- <div class="panel">
-  <h2>🏆 7-Day Typing Challenge</h2>
-  <p>Complete at least one test each day to build your practice habit.</p>
-  <div class="stats">
-   <div class="stat"><span>ACTIVE DAYS</span><strong id="challengeCount">0/7</strong></div>
-   <div class="stat"><span>BEST WPM</span><strong id="challengeBest">0</strong></div>
+  <div class="panel">
+    <p class="section-label">Daily Practice</p>
+    <h2>🏆 7-Day Typing Challenge</h2>
+    <p class="small">Complete at least one typing test every day. Your progress is saved on this device.</p>
+    <div class="stats">
+      <div class="stat">LAST 7 DAYS<strong id="challengeCount">0/7</strong></div>
+      <div class="stat">BEST WPM<strong id="challengeBest">0</strong></div>
+    </div>
+    <div id="challengeDays" class="grid" style="margin-top:15px"></div>
   </div>
-  <div class="grid" id="challengeDays" style="margin-top:15px"></div>
- </div>
 </section>
 
-<!-- ANALYTICS -->
 <section id="analytics" class="hidden">
- <div class="panel">
-  <h2>📊 Performance Analytics</h2>
-  <div class="stats">
-   <div class="stat"><span>TOTAL TESTS</span><strong id="total">0</strong></div>
-   <div class="stat"><span>BEST WPM</span><strong id="best">0</strong></div>
-   <div class="stat"><span>AVERAGE WPM</span><strong id="average">0</strong></div>
-   <div class="stat"><span>BEST ACCURACY</span><strong id="bestAccuracy">0%</strong></div>
-   <div class="stat"><span>AVG CONSISTENCY</span><strong id="avgConsistency">0%</strong></div>
+  <div class="panel">
+    <p class="section-label">Performance Tracking</p>
+    <h2>📊 Advanced Analytics</h2>
+    <div class="stats">
+      <div class="stat">TOTAL TESTS<strong id="total">0</strong></div>
+      <div class="stat">BEST WPM<strong id="best">0</strong></div>
+      <div class="stat">AVERAGE WPM<strong id="average">0</strong></div>
+      <div class="stat">BEST ACCURACY<strong id="bestAccuracy">0%</strong></div>
+    </div>
+    <h3 style="margin-top:24px">Recent Test History</h3>
+    <div id="history"></div>
+    <canvas id="chart" width="900" height="220" style="width:100%;max-width:100%"></canvas>
   </div>
-  <h3 style="margin-top:25px">WPM Progress</h3>
-  <canvas id="chart" width="900" height="230"></canvas>
-  <h3>Recent Test History</h3>
-  <div id="history"></div>
- </div>
 </section>
 
-<!-- PROFILE -->
 <section id="profile" class="hidden">
- <div class="panel">
-  <h2>👤 My Profile</h2>
-  <p id="profileInfo">No profile saved yet.</p>
-  <h3>Practice Calendar</h3>
-  <div id="calendar"></div>
-  <h3 style="margin-top:25px">Achievements</h3>
-  <div id="achievements"></div>
- </div>
- <div class="panel">
-  <h3>My Data</h3>
-  <p class="small">Your test history and profile are stored in this browser.</p>
-  <button class="secondary" onclick="downloadResult()">Export My Results</button>
- </div>
+  <div class="panel">
+    <p class="section-label">Your Account</p>
+    <h2>👤 My Profile</h2>
+    <p id="profileInfo">No profile saved yet.</p>
+    <h3>Practice Calendar</h3>
+    <div id="calendar"></div>
+    <h3 style="margin-top:25px">Achievements</h3>
+    <div id="achievements"></div>
+    <p class="small">Your profile and practice information are stored locally in this browser.</p>
+  </div>
 </section>
 
 <div class="panel">
- <h2>About TypeSprint Pro</h2>
- <p>TypeSprint helps you improve typing speed, accuracy and keyboard confidence through structured practice, personalized feedback and performance tracking.</p>
- <p class="small">TypeSprint is a browser-based practice platform. Your progress is saved locally on this device.</p>
+  <p class="section-label">About Us</p>
+  <h2>About TypeSprint</h2>
+  <p>TypeSprint is a free online typing practice platform designed to help learners improve keyboard speed, accuracy and confidence.</p>
+  <p class="small">Practice regularly, monitor your progress and build better typing habits.</p>
 </div>
-<footer>© 2026 TypeSprint Pro · Practice • Improve • Achieve</footer>
+
+<footer>© 2026 TypeSprint. All rights reserved.</footer>
 </div>
 
 <script>
-const $=id=>document.getElementById(id);
+const $ = id => document.getElementById(id);
 
-const banks={
- easy:"the cat is on the mat. i like to read and write. practice every day.",
- medium:"Consistent practice helps improve typing speed and accuracy. Focus on correct finger placement and build confidence with every sentence.",
- hard:"Technology continues to transform communication, education, and productivity. Efficient keyboard skills allow people to express complex ideas accurately and confidently.",
- numbers:"12345 67890 2026 98765 54321 10203 45678 90012",
- punctuation:"Hello, world! How are you? Practice: typing, punctuation; and accuracy.",
- coding:"const total = 100; function add(a, b) { return a + b; } console.log('Success!');"
+const banks = {
+  easy:"the cat is on the mat. i like to read and write. practice every day.",
+  medium:"Consistent practice helps improve typing speed and accuracy. Focus on correct finger placement and build confidence with every sentence.",
+  hard:"Technology continues to transform communication, education, and productivity. Efficient keyboard skills allow people to express complex ideas accurately and confidently.",
+  numbers:"12345 67890 2026 98765 54321 10203 45678 90012",
+  punctuation:"Hello, world! How are you? Practice: typing, punctuation; and accuracy.",
+  coding:"const total = 100; function add(a, b) { return a + b; } console.log('Success!');"
 };
 
-const lessonData=[
- {title:"Home Row Basics",level:"Beginner",text:"asdf jkl; asdf jkl; fjfj dkdk slsl aaaa jjjj"},
- {title:"Top Row Practice",level:"Beginner",text:"qwerty uiop qwer tyui opop quiet power"},
- {title:"Bottom Row Practice",level:"Beginner",text:"zxcv bnm zxcv bnm zoom box mix"},
- {title:"Common Words",level:"Intermediate",text:"the quick brown fox jumps over the lazy dog. practice makes progress."},
- {title:"Sentence Flow",level:"Intermediate",text:"A steady typing rhythm helps you write clearly, accurately, and confidently."},
- {title:"Advanced Paragraph",level:"Advanced",text:"Modern technology improves communication, productivity, education, creativity, and the way people share information."},
- {title:"Coding Practice",level:"Advanced",text:"function calculateTotal(price, quantity) { return price * quantity; }"},
- {title:"Number Practice",level:"Advanced",text:"2026 12345 67890 54321 98765 10203 45678"}
-];
-
-let history=JSON.parse(localStorage.getItem("tsHistory")||"[]");
-let completed=JSON.parse(localStorage.getItem("tsDays")||"[]");
-let weakKeyStats=JSON.parse(localStorage.getItem("tsWeakKeys")||"{}");
-
-let target="",remaining=60,timer=null,started=false,paused=false;
-let startTime=0,pausedAt=0,pausedTotal=0,custom="",sound=true,last=null;
-let errorsByKey={},previousTyped="",secondSamples=[],selectedLesson=0;
-let gameTimer=null,gameRemaining=30,gameStartedAt=0,gameSentence="",gameBest=Number(localStorage.getItem("tsGameBest")||0);
-
-function localDateKey(d=new Date()){
- return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-}
-function esc(s){
- return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
-function saveProfile(){
- let name=$("user").value.trim();
- if(!name){alert("Enter your name first.");return;}
- localStorage.setItem("tsUser",name);
- $("welcome").textContent="Welcome, "+name+"!";
- renderProfile();
-}
-function loadProfile(){
- let name=localStorage.getItem("tsUser")||"";
- $("user").value=name;
- $("welcome").textContent=name?"Welcome back, "+name+"!":"Welcome to TypeSprint Pro.";
-}
-function changeTheme(){document.body.className=$("theme").value;}
-function tab(name){
- ["test","academy","games","challenge","analytics","profile"].forEach(x=>$(x).classList.toggle("hidden",x!==name));
- if(name==="academy")renderLessons();
- if(name==="challenge")renderChallenge();
- if(name==="analytics")renderAnalytics();
- if(name==="profile")renderProfile();
-}
-function fullScreen(){
- if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();
- else document.exitFullscreen?.();
-}
-function toggleSound(){
- sound=!sound;
- $("soundState").textContent=sound?"ON":"OFF";
-}
-function beep(ok){
- if(!sound)return;
- try{
-  let c=new(window.AudioContext||window.webkitAudioContext)();
-  let o=c.createOscillator(),g=c.createGain();
-  o.connect(g);g.connect(c.destination);
-  o.frequency.value=ok?620:180;
-  g.gain.value=.025;
-  o.start();o.stop(c.currentTime+.045);
-  o.onended=()=>c.close();
- }catch(e){}
-}
-function customText(){
- let t=prompt("Enter your own typing paragraph:");
- if(t&&t.trim()){custom=t.trim();tab("test");start();}
-}
-function start(){
- clearInterval(timer);
- remaining=Number($("duration").value);
- let mode=$("mode").value;
- let text=custom||(mode==="numbers"?banks.numbers:
- mode==="punctuation"?banks.punctuation:
- mode==="coding"?banks.coding:banks[$("level").value]);
- custom="";
- target=(text+" ").repeat(8).trim();
- started=false;paused=false;startTime=0;pausedAt=0;pausedTotal=0;
- errorsByKey={};previousTyped="";secondSamples=[];
- $("typing").value="";$("typing").disabled=false;
- $("time").textContent=remaining;
- $("wpm").textContent="0";$("raw").textContent="0";
- $("acc").textContent="100%";$("errors").textContent="0";
- $("bar").style.width="0%";
- $("status").textContent="Start typing to begin.";
- $("blind").textContent=mode==="blind"?"Blind typing mode: target is hidden.":"";
- renderTarget();
- $("typing").focus({preventScroll:true});
-}
-function renderTarget(){
- $("target").style.display=$("mode").value==="blind"?"none":"block";
- let typed=$("typing").value;
- $("target").innerHTML=[...target].map((c,i)=>{
-  let cls=i<typed.length?(typed[i]===c?"correct":"wrong"):(i===typed.length?"current":"");
-  return `<span class="${cls}">${c===" "?"&nbsp;":esc(c)}</span>`;
- }).join("");
- if($("mode").value!=="blind"){
-  let current=$("target").querySelector(".current");
-  if(current){
-   let box=$("target"),top=current.offsetTop-box.offsetTop,bottom=top+current.offsetHeight;
-   if(top<box.scrollTop)box.scrollTop=top-12;
-   else if(bottom>box.scrollTop+box.clientHeight)box.scrollTop=bottom-box.clientHeight+12;
+function readStore(key,fallback) {
+  try {
+    const value=JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch(e) {
+    return fallback;
   }
- }
 }
-function elapsedSeconds(){
- if(!startTime)return 0;
- let end=paused?pausedAt:Date.now();
- return Math.max(0,(end-startTime-pausedTotal)/1000);
+
+let history=readStore("tsHistory",[]);
+let completed=readStore("tsDays",[]);
+let weakKeyStats=readStore("tsWeakKeys",{});
+
+let target="";
+let remaining=60;
+let timer=null;
+let started=false;
+let paused=false;
+let startTime=0;
+let custom="";
+let sound=true;
+let last=null;
+let errorsByKey={};
+
+function localDateKey(d) {
+  let y=d.getFullYear();
+  let m=String(d.getMonth()+1).padStart(2,"0");
+  let day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
 }
-function calculate(){
- let typed=$("typing").value,correct=0,wrong=0;
- for(let i=0;i<typed.length;i++){
-  if(typed[i]===target[i])correct++;
-  else wrong++;
- }
- let elapsed=Math.max(1,elapsedSeconds()/60);
- let wpm=Math.round(correct/5/elapsed);
- let raw=Math.round(typed.length/5/elapsed);
- let accuracy=typed.length?Math.round(correct/typed.length*100):100;
- $("wpm").textContent=wpm;
- $("raw").textContent=raw;
- $("acc").textContent=accuracy+"%";
- $("errors").textContent=wrong;
- $("bar").style.width=Math.min(100,typed.length/target.length*100)+"%";
- return {wpm,raw,accuracy,wrong,correct,typed:typed.length};
-}
-$("typing").addEventListener("input",()=>{
- if(paused||!$("typing").disabled===false)return;
- let typed=$("typing").value;
- if(!started&&typed.length){
-  started=true;startTime=Date.now();
-  timer=setInterval(tick,250);
- }
- if(typed.length>previousTyped.length){
-  for(let i=previousTyped.length;i<typed.length;i++){
-   if(typed[i]!==target[i]){
-    let expected=(target[i]||"").toLowerCase();
-    if(/[a-z0-9]/.test(expected))errorsByKey[expected]=(errorsByKey[expected]||0)+1;
-    beep(false);
-   }else beep(true);
+
+function saveProfile() {
+  let name=$("user").value.trim();
+  if(!name) {
+    alert("Enter your name first.");
+    return;
   }
- }
- previousTyped=typed;
- renderTarget();
- let s=calculate();
- finger(typed.slice(-1));
- if(s.typed>=target.length)finish();
- if($("mode").value==="accuracy"&&s.accuracy<95)
-  $("status").textContent="Accuracy First: slow down and focus on correct keys.";
-});
-function tick(){
- if(!started||paused)return;
- remaining=Math.max(0,Number($("duration").value)-Math.floor(elapsedSeconds()));
- $("time").textContent=remaining;
- let s=calculate();
- secondSamples.push(s.wpm);
- if(remaining<=0)finish();
+  localStorage.setItem("tsUser",name);
+  $("welcome").textContent="Welcome, "+name+"!";
+  renderProfile();
 }
-function pause(){
- if(!started&&!paused)return;
- if(!paused){
-  paused=true;pausedAt=Date.now();clearInterval(timer);
-  $("typing").disabled=true;$("status").textContent="Paused.";
- }else{
-  pausedTotal+=Date.now()-pausedAt;
-  paused=false;pausedAt=0;
+
+function loadProfile() {
+  let name=localStorage.getItem("tsUser")||"";
+  $("user").value=name;
+  $("welcome").textContent=name?"Welcome back, "+name+"!":"Welcome! Create your local profile.";
+}
+
+function changeTheme() {
+  document.body.className=$("theme").value;
+  localStorage.setItem("tsTheme",$("theme").value);
+}
+
+function tab(name) {
+  ["test","challenge","analytics","profile"].forEach(x=>{
+    $(x).classList.toggle("hidden",x!==name);
+  });
+
+  if(name==="challenge") renderChallenge();
+  if(name==="analytics") renderAnalytics();
+  if(name==="profile") renderProfile();
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function fullScreen() {
+  if(!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
+function toggleSound() {
+  sound=!sound;
+  $("soundState").textContent=sound?"ON":"OFF";
+}
+
+function beep(ok) {
+  if(!sound) return;
+  try {
+    let c=new(window.AudioContext||window.webkitAudioContext)();
+    let o=c.createOscillator();
+    let g=c.createGain();
+    o.connect(g);
+    g.connect(c.destination);
+    o.frequency.value=ok?620:180;
+    g.gain.value=.035;
+    o.start();
+    o.stop(c.currentTime+.06);
+  } catch(e) {}
+}
+
+function customText() {
+  let t=prompt("Enter your own typing paragraph:");
+  if(t&&t.trim()) {
+    custom=t.trim();
+    start();
+  }
+}
+
+function start() {
+  clearInterval(timer);
+
+  remaining=Number($("duration").value);
+  let mode=$("mode").value;
+
+  let text=custom || (
+    mode==="numbers"?banks.numbers:
+    mode==="punctuation"?banks.punctuation:
+    mode==="coding"?banks.coding:
+    banks[$("level").value]
+  );
+
+  custom="";
+  target=(text+" ").repeat(6).trim();
+
+  started=false;
+  paused=false;
+  startTime=0;
+  errorsByKey={};
+
+  $("typing").value="";
   $("typing").disabled=false;
-  timer=setInterval(tick,250);
+  $("time").textContent=remaining;
+  $("wpm").textContent="0";
+  $("acc").textContent="100%";
+  $("errors").textContent="0";
+  $("bar").style.width="0%";
+  $("status").textContent="Start typing to begin.";
+
+  $("blind").textContent=mode==="blind"?
+    "Blind typing mode: target is hidden.":"";
+
+  $("typing").placeholder="Start typing here...";
+  renderTarget();
   $("typing").focus({preventScroll:true});
-  $("status").textContent="Resumed.";
- }
-}
-function finish(){
- if(!started)return;
- clearInterval(timer);
- let s=calculate();
- started=false;paused=false;
- $("typing").disabled=true;
- let consistency=100;
- if(secondSamples.length>1){
-  let avg=secondSamples.reduce((a,b)=>a+b,0)/secondSamples.length;
-  let variance=secondSamples.reduce((a,b)=>a+(b-avg)**2,0)/secondSamples.length;
-  consistency=Math.max(0,Math.round(100-Math.sqrt(variance)*2));
- }
- let result={
-  name:localStorage.getItem("tsUser")||"Guest",
-  wpm:s.wpm,raw:s.raw,accuracy:s.accuracy,errors:s.wrong,
-  consistency,date:new Date().toLocaleString(),
-  day:localDateKey()
- };
- last=result;
- history.push(result);
- history=history.slice(-100);
- localStorage.setItem("tsHistory",JSON.stringify(history));
- Object.entries(errorsByKey).forEach(([key,count])=>{
-  weakKeyStats[key]=(weakKeyStats[key]||0)+count;
- });
- localStorage.setItem("tsWeakKeys",JSON.stringify(weakKeyStats));
- if(!completed.includes(result.day)){
-  completed.push(result.day);
-  localStorage.setItem("tsDays",JSON.stringify(completed));
- }
- $("status").textContent="Test complete! Your result has been saved.";
- coach(s,consistency);
- renderTarget();renderChallenge();renderProfile();
-}
-function coach(s,consistency=100){
- let tips=[];
- if(s.accuracy>=98)tips.push("Excellent accuracy. Keep your steady rhythm.");
- else if(s.accuracy>=90)tips.push("Good accuracy. Focus on difficult words.");
- else tips.push("Improve accuracy first. Slow down and avoid rushing.");
- if(s.wpm<25)tips.push("Build a foundation with short, familiar sentences.");
- else if(s.wpm<45)tips.push("Good progress. Work on a smooth typing rhythm.");
- else tips.push("Strong speed. Maintain accuracy while increasing pace.");
- if(consistency<65)tips.push("Your pace varies. Try to maintain a consistent rhythm.");
- tips.push("Keep your wrists relaxed and use the correct finger positions.");
- let ranked=Object.entries(weakKeyStats).sort((a,b)=>b[1]-a[1]).slice(0,5);
- $("coach").innerHTML=tips.map(t=>`<div class="item">💡 ${t}</div>`).join("");
- $("coachScore").textContent=`Latest test: ${s.wpm} WPM • ${s.accuracy}% accuracy • ${consistency}% consistency.`;
- $("weakKeys").innerHTML=ranked.length?
- ranked.map(([key,count])=>`<span class="weak-key">${esc(key.toUpperCase())} · ${count}</span>`).join("")
- :'<span class="small">No weak keys recorded yet. Keep practising!</span>';
-}
-function practiceWeakKeys(){
- let ranked=Object.entries(weakKeyStats).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>x[0]);
- if(!ranked.length){alert("Complete a typing test first.");return;}
- let words={a:"amazing",b:"bright",c:"careful",d:"dedicated",e:"excellent",f:"focus",g:"great",h:"helpful",i:"inside",j:"journey",k:"keyboard",l:"learning",m:"memory",n:"number",o:"orange",p:"practice",q:"quick",r:"rhythm",s:"steady",t:"typing",u:"useful",v:"vivid",w:"wonder",x:"extra",y:"young",z:"zero"};
- let drill=ranked.map(k=>words[k]||k).flatMap(w=>[w,w,`type ${w} slowly`]);
- custom=drill.join(". ")+". Repeat slowly and accurately.";
- tab("test");$("mode").value="normal";$("level").value="easy";start();
- $("status").textContent="Weak-key practice started. Focus on accuracy.";
-}
-function review(){
- let entries=Object.entries(errorsByKey).sort((a,b)=>b[1]-a[1]);
- $("mistakes").innerHTML=entries.length?
- entries.map(([k,v])=>`<div class="item">Expected key <b>${esc(k.toUpperCase())}</b>: ${v} mistake(s)</div>`).join("")
- :"No mistakes recorded in this test.";
-}
-function finger(ch){
- if(!ch)return;
- let c=ch.toLowerCase(),f="Use the correct finger";
- if("qaz".includes(c))f="Left little finger";
- else if("wsx".includes(c))f="Left ring finger";
- else if("edc".includes(c))f="Left middle finger";
- else if("rfvtgb".includes(c))f="Left index finger";
- else if("yhnujm".includes(c))f="Right index finger";
- else if("ik,".includes(c))f="Right middle finger";
- else if("ol.".includes(c))f="Right ring finger";
- else if("p;/".includes(c))f="Right little finger";
- else if(c===" ")f="Thumb";
- $("finger").textContent=`Key "${ch}" — ${f}`;
- document.querySelectorAll(".key").forEach(k=>k.classList.toggle("active",k.textContent.toLowerCase()===c));
-}
-function renderKeyboard(){
- $("keyboard").innerHTML="QWERTYUIOPASDFGHJKLZXCVBNM".split("").map(k=>`<div class="key">${k}</div>`).join("");
 }
 
-// ACADEMY
-function renderLessons(){
- $("lessons").innerHTML=lessonData.map((l,i)=>`
- <div class="lesson-card">
-  <span class="badge">${esc(l.level)}</span>
-  <h3>${esc(l.title)}</h3>
-  <p class="small">${l.text.length} characters to practise</p>
-  <button onclick="selectLesson(${i})">Select Lesson</button>
- </div>`).join("");
-}
-function selectLesson(i){
- selectedLesson=i;
- $("lessonInfo").textContent=lessonData[i].title+" selected. Press Start Selected Lesson.";
-}
-function startLesson(){
- let l=lessonData[selectedLesson];
- custom=l.text;
- $("level").value="easy";$("mode").value="normal";$("duration").value="60";
- tab("test");start();
- $("status").textContent="Academy lesson: "+l.title;
-}
+function renderTarget() {
+  $("target").style.display=$("mode").value==="blind"?"none":"block";
 
-// GAMES
-const gameSentences=[
- "Practice every day to improve your typing speed.",
- "Accuracy is more important than rushing through words.",
- "A good typist builds speed through consistent practice.",
- "Technology makes communication faster and easier.",
- "Focus on the keyboard and maintain a steady rhythm.",
- "Small improvements every day create great results."
-];
-function startGame(){
- clearInterval(gameTimer);
- gameRemaining=30;
- gameSentence=gameSentences[Math.floor(Math.random()*gameSentences.length)];
- $("gameText").textContent=gameSentence;
- $("gameInput").value="";$("gameInput").disabled=false;
- $("gameTime").textContent="30";$("gameWpm").textContent="0";$("gameScore").textContent="0";
- $("gameBest").textContent=gameBest;
- gameStartedAt=0;
- $("gameStatus").textContent="Start typing to begin!";
- $("gameInput").focus();
-}
-$("gameInput").addEventListener("input",()=>{
- if(!gameStartedAt)gameStartedAt=Date.now();
- let val=$("gameInput").value;
- let correct=0;
- for(let i=0;i<val.length;i++)if(val[i]===gameSentence[i])correct++;
- let elapsed=Math.max(1,(Date.now()-gameStartedAt)/60000);
- let wpm=Math.round(correct/5/elapsed);
- $("gameWpm").textContent=wpm;
- $("gameScore").textContent=correct;
- if(val===gameSentence)endGame("Completed! Great work.");
-});
-function endGame(message){
- if(!$("gameInput").disabled){
-  $("gameInput").disabled=true;
-  clearInterval(gameTimer);
-  let score=Number($("gameWpm").textContent);
-  if(score>gameBest){
-   gameBest=score;
-   localStorage.setItem("tsGameBest",gameBest);
+  let typed=$("typing").value;
+
+  $("target").innerHTML=[...target].map((c,i)=>{
+    let cls=i<typed.length?
+      (typed[i]===c?"correct":"wrong"):
+      (i===typed.length?"current":"");
+
+    return `<span class="${cls}">${c===" "?"&nbsp;":esc(c)}</span>`;
+  }).join("");
+
+  if($("mode").value!=="blind") {
+    let current=$("target").querySelector(".current");
+
+    if(current) {
+      let box=$("target");
+      let top=current.offsetTop-box.offsetTop;
+      let bottom=top+current.offsetHeight;
+
+      if(top<box.scrollTop) {
+        box.scrollTop=top-12;
+      } else if(bottom>box.scrollTop+box.clientHeight) {
+        box.scrollTop=bottom-box.clientHeight+12;
+      }
+    }
   }
-  $("gameBest").textContent=gameBest;
-  $("gameStatus").textContent=message+" Your game WPM: "+score;
- }
-}
-setInterval(()=>{
- if(!$("games").classList.contains("hidden")&&gameStartedAt&& !$("gameInput").disabled){
-  gameRemaining=Math.max(0,30-Math.floor((Date.now()-gameStartedAt)/1000));
-  $("gameTime").textContent=gameRemaining;
-  if(gameRemaining<=0)endGame("Time is up.");
- }
-},250);
-
-// CHALLENGE
-function renderChallenge(){
- let last7=Array.from({length:7},(_,i)=>{
-  let d=new Date();d.setDate(d.getDate()-(6-i));return localDateKey(d);
- });
- let count=last7.filter(d=>completed.includes(d)).length;
- $("challengeCount").textContent=count+"/7";
- $("challengeBest").textContent=history.length?Math.max(...history.map(x=>x.wpm)):0;
- $("challengeDays").innerHTML=last7.map((d,i)=>`
- <div class="panel" style="text-align:center">
-  <span class="small">${d}</span><h2>${completed.includes(d)?"✅":"○"}</h2>
-  <span class="small">${completed.includes(d)?"Completed":"Practice today"}</span>
- </div>`).join("");
 }
 
-// ANALYTICS
-function renderAnalytics(){
- let n=history.length;
- $("total").textContent=n;
- $("best").textContent=n?Math.max(...history.map(x=>x.wpm)):0;
- $("average").textContent=n?Math.round(history.reduce((a,b)=>a+b.wpm,0)/n):0;
- $("bestAccuracy").textContent=(n?Math.max(...history.map(x=>x.accuracy)):0)+"%";
- $("avgConsistency").textContent=(n?Math.round(history.reduce((a,b)=>a+(b.consistency||0),0)/n):0)+"%";
- $("history").innerHTML=history.slice(-15).reverse().map(x=>`
- <div class="item"><b>${esc(x.name)}</b> — ${x.wpm} WPM · ${x.accuracy}% accuracy · ${x.errors} errors
- <div class="small">${esc(x.date)}</div></div>`).join("")||"Complete a test to see your history.";
- drawChart();
-}
-function drawChart(){
- let c=$("chart"),ctx=c.getContext("2d");
- let w=c.width,h=c.height;
- ctx.clearRect(0,0,w,h);
- ctx.fillStyle="#9baac3";ctx.font="15px Arial";
- ctx.fillText("Typing speed over your latest tests",15,22);
- let values=history.slice(-25).map(x=>x.wpm);
- if(!values.length){
-  ctx.fillText("Your progress chart will appear after your first test.",15,65);return;
- }
- let max=Math.max(10,...values)*1.15;
- ctx.strokeStyle="#7894ff";ctx.lineWidth=3;ctx.beginPath();
- values.forEach((v,i)=>{
-  let x=30+i*(w-60)/Math.max(1,values.length-1);
-  let y=h-25-v/max*(h-65);
-  i?ctx.lineTo(x,y):ctx.moveTo(x,y);
- });
- ctx.stroke();
- values.forEach((v,i)=>{
-  let x=30+i*(w-60)/Math.max(1,values.length-1);
-  let y=h-25-v/max*(h-65);
-  ctx.fillStyle="#31d69b";ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
- });
+function esc(s) {
+  return String(s).replace(/[&<>"']/g,c=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
 }
 
-// PROFILE
-function renderProfile(){
- let name=localStorage.getItem("tsUser")||"Guest";
- let best=history.length?Math.max(...history.map(x=>x.wpm)):0;
- $("profileInfo").textContent=`Name: ${name} | Tests: ${history.length} | Personal best: ${best} WPM`;
- let days=Array.from({length:28},(_,i)=>{
-  let d=new Date();d.setDate(d.getDate()-(27-i));
-  let key=localDateKey(d);
-  return `<div class="day ${completed.includes(key)?"done":""}">${d.getDate()}<br>${completed.includes(key)?"✓":"·"}</div>`;
- });
- $("calendar").innerHTML=days.join("");
- let achievements=[];
- if(history.length>=1)achievements.push("🏅 First Test Completed");
- if(history.some(x=>x.wpm>=20))achievements.push("⚡ 20 WPM Club");
- if(history.some(x=>x.wpm>=30))achievements.push("🚀 30 WPM Club");
- if(history.some(x=>x.wpm>=50))achievements.push("🔥 50 WPM Club");
- if(history.some(x=>x.accuracy>=98))achievements.push("🎯 Accuracy Star");
- if(completed.length>=7)achievements.push("📅 7 Practice Days");
- if(history.length>=10)achievements.push("🏆 10 Tests Completed");
- $("achievements").innerHTML=achievements.map(x=>`<div class="item">${x}</div>`).join("")||"Complete tests to unlock achievements.";
+function calculate() {
+  let typed=$("typing").value;
+  let correct=0;
+  let wrong=0;
+
+  for(let i=0;i<typed.length;i++) {
+    if(typed[i]===target[i]) correct++;
+    else wrong++;
+  }
+
+  // Correct elapsed-time calculation, including short tests.
+  let elapsedSeconds=startTime?
+    Math.max(1,(Date.now()-startTime)/1000):1;
+
+  let elapsedMinutes=elapsedSeconds/60;
+  let wpm=Math.round(correct/5/elapsedMinutes);
+  let accuracy=typed.length?
+    Math.round(correct/typed.length*100):100;
+
+  $("wpm").textContent=wpm;
+  $("acc").textContent=accuracy+"%";
+  $("errors").textContent=wrong;
+
+  $("bar").style.width=Math.min(
+    100,typed.length/target.length*100
+  )+"%";
+
+  return {wpm,accuracy,wrong,correct,typed:typed.length};
 }
 
-// CERTIFICATE
-function certificate(){
- if(!last){alert("Complete a test first.");return;}
- let w=window.open("","_blank");
- if(!w){alert("Allow pop-ups to print your certificate.");return;}
- w.document.write(`<html><head><title>TypeSprint Certificate</title><style>
- body{font-family:Arial;text-align:center;padding:50px;color:#24304b}
- main{border:8px double #718cff;padding:45px}
- h1{color:#526fe0;font-size:38px}h2{font-size:30px}
- p{font-size:19px}
- </style></head><body><main>
- <h1>Certificate of Achievement</h1>
- <p>This certificate is presented to</p>
- <h2>${esc(last.name)}</h2>
- <p>For completing a TypeSprint Pro typing test</p>
- <h2>${last.wpm} WPM</h2>
- <p>Accuracy: ${last.accuracy}%</p>
- <p>${esc(last.date)}</p>
- <p>Keep learning and improving!</p>
- </main><script>window.onload=()=>window.print()<\/script></body></html>`);
- w.document.close();
-}
-function downloadResult(){
- if(!history.length){alert("Complete a test first.");return;}
- let rows=[["Name","WPM","Raw WPM","Accuracy","Errors","Consistency","Date"]];
- history.forEach(x=>rows.push([x.name,x.wpm,x.raw||0,x.accuracy,x.errors,x.consistency||0,x.date]));
- let csv=rows.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\n");
- let a=document.createElement("a");
- let url=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
- a.href=url;a.download="typesprint-pro-results.csv";a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+$("typing").addEventListener("input",()=>{
+  if(paused||$("typing").disabled) return;
+
+  if(!started) {
+    started=true;
+    startTime=Date.now();
+    timer=setInterval(tick,1000);
+  }
+
+  let typed=$("typing").value;
+  let i=typed.length-1;
+
+  if(i>=0) {
+    if(typed[i]!==target[i]) {
+      let expected=target[i].toLowerCase();
+
+      if(/[a-z0-9]/.test(expected)) {
+        errorsByKey[expected]=(errorsByKey[expected]||0)+1;
+      }
+
+      beep(false);
+    } else {
+      beep(true);
+    }
+  }
+
+  renderTarget();
+
+  let s=calculate();
+  finger(typed.slice(-1));
+
+  if(typed.length>=target.length) {
+    finish();
+    return;
+  }
+
+  if($("mode").value==="accuracy"&&s.accuracy<90) {
+    $("status").textContent="Accuracy First: slow down and focus on correct keys.";
+  }
+});
+
+function tick() {
+  if(!started||paused) return;
+
+  remaining--;
+  $("time").textContent=remaining;
+
+  if(remaining<=0) finish();
 }
 
-// INITIALIZE
+function pause() {
+  if(!started) return;
+
+  if(!paused) {
+    paused=true;
+    clearInterval(timer);
+    $("typing").disabled=true;
+    $("status").textContent="Paused.";
+  } else {
+    paused=false;
+    $("typing").disabled=false;
+
+    let elapsed=(Number($("duration").value)-remaining)*1000;
+    startTime=Date.now()-elapsed;
+
+    timer=setInterval(tick,1000);
+    $("typing").focus({preventScroll:true});
+    $("status").textContent="Resumed.";
+  }
+}
+
+function finish() {
+  if(!started) return;
+
+  clearInterval(timer);
+  started=false;
+  paused=false;
+  $("typing").disabled=true;
+
+  let s=calculate();
+
+  let result={
+    name:localStorage.getItem("tsUser")||"Guest",
+    wpm:s.wpm,
+    accuracy:s.accuracy,
+    errors:s.wrong,
+    date:new Date().toLocaleString(),
+    day:localDateKey(new Date())
+  };
+
+  last=result;
+  history.push(result);
+  history=history.slice(-50);
+
+  localStorage.setItem("tsHistory",JSON.stringify(history));
+
+  Object.entries(errorsByKey).forEach(([key,count])=>{
+    weakKeyStats[key]=(weakKeyStats[key]||0)+count;
+  });
+
+  localStorage.setItem("tsWeakKeys",JSON.stringify(weakKeyStats));
+
+  if(!completed.includes(result.day)) {
+    completed.push(result.day);
+    localStorage.setItem("tsDays",JSON.stringify(completed));
+  }
+
+  $("status").textContent="Test complete! Your result has been saved.";
+
+  coach(s);
+  review();
+  renderTarget();
+  renderChallenge();
+  renderProfile();
+}
+
+function coach(s) {
+  let tips=[];
+
+  if(s.accuracy>=97) {
+    tips.push("Excellent accuracy. Keep the same steady rhythm.");
+  } else if(s.accuracy>=90) {
+    tips.push("Good accuracy. Slow down slightly on difficult words.");
+  } else {
+    tips.push("Focus on correct keystrokes before increasing speed.");
+  }
+
+  if(s.wpm<25) {
+    tips.push("Build a steady foundation with short, familiar sentences.");
+  } else if(s.wpm<45) {
+    tips.push("Good progress. Try to keep an even pace without rushing.");
+  } else {
+    tips.push("Strong typing speed. Maintain accuracy as you increase your pace.");
+  }
+
+  tips.push("Keep your wrists relaxed and use the home-row finger positions.");
+
+  let ranked=Object.entries(weakKeyStats)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,5);
+
+  $("coach").innerHTML=tips.map(t=>
+    `<div class="item">💡 ${t}</div>`
+  ).join("");
+
+  $("coachScore").textContent=
+    `This test: ${s.wpm} WPM • ${s.accuracy}% accuracy • ${s.wrong} errors.`;
+
+  $("weakKeys").innerHTML=ranked.length?
+    ranked.map(([key,count])=>
+      `<span class="weak-key">${esc(key.toUpperCase())} · ${count}</span>`
+    ).join("") :
+    '<span class="small">No weak keys recorded yet. Keep practising!</span>';
+}
+
+function practiceWeakKeys() {
+  let ranked=Object.entries(weakKeyStats)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,5)
+    .map(x=>x[0]);
+
+  if(!ranked.length) {
+    alert("Complete a typing test first so TypeSprint can find your weak keys.");
+    return;
+  }
+
+  let words={
+    a:"amazing",b:"bright",c:"careful",d:"dedicated",
+    e:"excellent",f:"focus",g:"great",h:"helpful",
+    i:"inside",j:"journey",k:"keyboard",l:"learning",
+    m:"memory",n:"number",o:"orange",p:"practice",
+    q:"quick",r:"rhythm",s:"steady",t:"typing",
+    u:"useful",v:"vivid",w:"wonder",x:"extra",
+    y:"young",z:"zero"
+  };
+
+  let drill=[];
+
+  ranked.forEach(key=>{
+    if(words[key]) {
+      drill.push(words[key],words[key],`type ${words[key]} slowly`);
+    }
+  });
+
+  custom=(drill.join(". ")+
+    ". Repeat slowly and accurately.").trim();
+
+  tab("test");
+  $("mode").value="normal";
+  $("level").value="easy";
+  start();
+
+  $("status").textContent=
+    "Weak-key practice started. Focus on accuracy and relaxed typing.";
+}
+
+function review() {
+  let entries=Object.entries(errorsByKey)
+    .sort((a,b)=>b[1]-a[1]);
+
+  $("mistakes").innerHTML=entries.length?
+    entries.map(([k,v])=>
+      `<div class="item">Expected key <b>${esc(k.toUpperCase())}</b>: ${v} mistake(s)</div>`
+    ).join("") :
+    "No mistakes recorded in this test.";
+}
+
+function finger(ch) {
+  if(!ch) return;
+
+  let c=ch.toLowerCase();
+  let f="Use the correct finger";
+
+  if("qaz".includes(c)) f="Left little finger";
+  else if("wsx".includes(c)) f="Left ring finger";
+  else if("edc".includes(c)) f="Left middle finger";
+  else if("rfvtgb".includes(c)) f="Left index finger";
+  else if("yhnujm".includes(c)) f="Right index finger";
+  else if("ik,".includes(c)) f="Right middle finger";
+  else if("ol.".includes(c)) f="Right ring finger";
+  else if("p;/".includes(c)) f="Right little finger";
+  else if(c===" ") f="Thumb";
+
+  $("finger").textContent=`Key "${ch}" — ${f}`;
+
+  document.querySelectorAll(".key").forEach(k=>{
+    k.classList.toggle("active",k.textContent.toLowerCase()===c);
+  });
+}
+
+function renderKeyboard() {
+  $("keyboard").innerHTML=
+    "QWERTYUIOPASDFGHJKLZXCVBNM".split("").map(k=>
+      `<div class="key">${k}</div>`
+    ).join("");
+}
+
+function renderChallenge() {
+  let last7=Array.from({length:7},(_,i)=>{
+    let d=new Date();
+    d.setDate(d.getDate()-(6-i));
+    return localDateKey(d);
+  });
+
+  let count=last7.filter(day=>completed.includes(day)).length;
+
+  $("challengeCount").textContent=count+"/7";
+
+  $("challengeBest").textContent=history.length?
+    Math.max(...history.map(x=>x.wpm)):0;
+
+  $("challengeDays").innerHTML=last7.map((day,i)=>{
+    let done=completed.includes(day);
+
+    return `<div class="panel" style="text-align:center">
+      <span class="small">${day}</span>
+      <h2>${done?"✅":"○"}</h2>
+      <span class="small">${done?"Completed":"Not completed"}</span>
+    </div>`;
+  }).join("");
+}
+
+function renderAnalytics() {
+  let n=history.length;
+
+  $("total").textContent=n;
+  $("best").textContent=n?Math.max(...history.map(x=>x.wpm)):0;
+  $("average").textContent=n?
+    Math.round(history.reduce((a,b)=>a+b.wpm,0)/n):0;
+  $("bestAccuracy").textContent=
+    (n?Math.max(...history.map(x=>x.accuracy)):0)+"%";
+
+  $("history").innerHTML=history.slice(-10).reverse().map(x=>
+    `<div class="item">
+      <b>${esc(x.name)}</b> — ${x.wpm} WPM — ${x.accuracy}% accuracy
+      <span class="small">${esc(x.date)}</span>
+    </div>`
+  ).join("")||"Complete a test to see your history.";
+
+  let c=$("chart");
+  let ctx=c.getContext("2d");
+
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle="#9baac3";
+  ctx.font="16px Arial";
+  ctx.fillText("WPM Progress",10,20);
+
+  if(n) {
+    let values=history.slice(-20).map(x=>x.wpm);
+    let max=Math.max(10,...values);
+
+    ctx.beginPath();
+
+    values.forEach((v,i)=>{
+      let x=30+i*(c.width-60)/Math.max(1,values.length-1);
+      let y=c.height-25-v/max*(c.height-65);
+
+      i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+    });
+
+    ctx.strokeStyle="#718cff";
+    ctx.lineWidth=3;
+    ctx.stroke();
+  }
+}
+
+function renderProfile() {
+  let name=localStorage.getItem("tsUser")||"Guest";
+
+  $("profileInfo").textContent=
+    `Name: ${name} | Tests completed: ${history.length} | Best WPM: ${
+      history.length?Math.max(...history.map(x=>x.wpm)):0
+    }`;
+
+  let days=Array.from({length:28},(_,i)=>{
+    let d=new Date();
+    d.setDate(d.getDate()-(27-i));
+    let key=localDateKey(d);
+
+    return `<div class="day ${completed.includes(key)?"done":""}">
+      ${d.getDate()}<br>${completed.includes(key)?"✓":"·"}
+    </div>`;
+  });
+
+  $("calendar").innerHTML=days.join("");
+
+  let achievements=[];
+
+  if(history.length>=1) achievements.push("🏅 First Test Completed");
+  if(history.some(x=>x.wpm>=30)) achievements.push("⚡ 30 WPM Club");
+  if(history.some(x=>x.wpm>=50)) achievements.push("🚀 50 WPM Club");
+  if(history.some(x=>x.accuracy>=98)) achievements.push("🎯 Accuracy Star");
+  if(completed.length>=7) achievements.push("🔥 7-Day Practice");
+
+  $("achievements").innerHTML=achievements.map(x=>
+    `<div class="item">${x}</div>`
+  ).join("")||"Complete tests to unlock achievements.";
+}
+
+function certificate() {
+  if(!last) {
+    alert("Complete a test first.");
+    return;
+  }
+
+  let w=window.open("","_blank");
+
+  if(!w) {
+    alert("Allow pop-ups to print your certificate.");
+    return;
+  }
+
+  w.document.write(`
+    <html>
+    <head>
+      <title>Typing Certificate</title>
+      <style>
+        body{font-family:Arial;text-align:center;padding:70px;color:#24304b}
+        main{border:8px double #718cff;padding:55px}
+        h1{color:#526fe0;font-size:38px}
+        h2{font-size:30px}
+        p{font-size:20px}
+      </style>
+    </head>
+    <body>
+      <main>
+        <h1>Certificate of Achievement</h1>
+        <p>This certificate is proudly presented to</p>
+        <h2>${esc(last.name)}</h2>
+        <p>For completing a TypeSprint typing test</p>
+        <h2>${last.wpm} WPM</h2>
+        <p>Accuracy: ${last.accuracy}%</p>
+        <p>${esc(last.date)}</p>
+        <p>Keep learning and improving!</p>
+      </main>
+      <script>window.onload=()=>window.print();<\/script>
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+}
+
+function downloadResult() {
+  if(!history.length) {
+    alert("Complete a test first.");
+    return;
+  }
+
+  let csv="Name,WPM,Accuracy,Errors,Date\n"+
+    history.map(x=>
+      [x.name,x.wpm,x.accuracy,x.errors,x.date]
+      .map(v=>'"'+String(v).replaceAll('"','""')+'"')
+      .join(",")
+    ).join("\n");
+
+  let a=document.createElement("a");
+  let url=URL.createObjectURL(
+    new Blob([csv],{type:"text/csv"})
+  );
+
+  a.href=url;
+  a.download="typesprint-results.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+// Restore saved preferences and profile.
 loadProfile();
 renderKeyboard();
-renderLessons();
-$("gameBest").textContent=gameBest;
-start();
 renderChallenge();
 renderProfile();
+
+let savedTheme=localStorage.getItem("tsTheme")||"";
+$("theme").value=savedTheme;
+document.body.className=savedTheme;
+
+// Prepare the first test without forcing a page scroll.
+start();
 </script>
 </body>
 </html>
