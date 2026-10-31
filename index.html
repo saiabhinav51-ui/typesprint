@@ -29,7 +29,12 @@ textarea{width:100%;min-height:115px;resize:vertical;font-size:17px;line-height:
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
 .stat{background:var(--bg);border-radius:10px;padding:13px 5px;text-align:center}
 .stat strong{display:block;font-size:25px;color:var(--accent);margin-top:6px}
-#target{font-size:19px;line-height:1.9;overflow-wrap:anywhere;min-height:90px}
+#target{font-size:19px;line-height:1.9;overflow-wrap:anywhere;min-height:90px;max-height:190px;overflow-y:auto;padding:8px;scroll-behavior:smooth}
+#targetPanel{position:sticky;top:8px;z-index:20;box-shadow:0 8px 24px #0003}
+.coach-score{font-size:14px;color:var(--muted);margin:8px 0}
+.weak-keys{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}
+.weak-key{background:var(--bg);border:1px solid var(--bad);border-radius:7px;padding:6px 10px;font-weight:bold}
+.coach-action{margin-top:10px}
 .correct{color:var(--good)}.wrong{color:var(--bad);background:#ff657d22}
 .current{border-bottom:2px solid var(--accent)}
 .progress{height:9px;background:var(--bg);border-radius:20px;overflow:hidden;margin-top:12px}
@@ -120,7 +125,7 @@ footer{text-align:center;color:var(--muted);padding:20px}
 <p id="status" class="small">Press Start to begin.</p>
 </div>
 
-<div class="panel">
+<div class="panel" id="targetPanel">
 <h3>WHAT TO TYPE</h3>
 <div id="target"></div>
 <p id="blind" class="small"></p>
@@ -145,7 +150,10 @@ footer{text-align:center;color:var(--muted);padding:20px}
 </div>
 <div class="panel">
 <h3>Typing Coach</h3>
-<div id="coach">Complete a test to receive tips.</div>
+<div id="coach">Complete a test to receive personalized tips.</div>
+<div id="coachScore" class="coach-score">Your weak-key analysis will appear after a test.</div>
+<div id="weakKeys" class="weak-keys"></div>
+<button class="secondary coach-action" onclick="practiceWeakKeys()">Practice My Weak Keys</button>
 </div>
 </div>
 
@@ -202,8 +210,7 @@ footer{text-align:center;color:var(--muted);padding:20px}
 
 <footer>© 2026 TypeSprint | Free Typing Practice</footer>
 </div>
-
-<script>
+  <script>
 const $=id=>document.getElementById(id);
 const banks={
 easy:"the cat is on the mat. i like to read and write. practice every day.",
@@ -217,7 +224,9 @@ let history=JSON.parse(localStorage.getItem("tsHistory")||"[]");
 let completed=JSON.parse(localStorage.getItem("tsDays")||"[]");
 let target="",remaining=60,timer=null,started=false,paused=false;
 let startTime=0,custom="",sound=true,last=null,errorsByKey={};
+let weakKeyStats=JSON.parse(localStorage.getItem("tsWeakKeys")||"{}");
 
+function localDateKey(d){let y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return `${y}-${m}-${day}`;}
 function saveProfile(){
 let name=$("user").value.trim();
 if(!name){alert("Enter your name first.");return}
@@ -269,15 +278,22 @@ $("time").textContent=remaining;$("wpm").textContent="0";
 $("acc").textContent="100%";$("errors").textContent="0";
 $("bar").style.width="0%";$("status").textContent="Start typing to begin.";
 $("blind").textContent=mode==="blind"?"Blind typing mode: target is hidden.":"";
-renderTarget();$("typing").focus();
+renderTarget();$("typing").focus({preventScroll:true});
 }
 function renderTarget(){
 $("target").style.display=$("mode").value==="blind"?"none":"block";
 let typed=$("typing").value;
 $("target").innerHTML=[...target].map((c,i)=>{
 let cls=i<typed.length?(typed[i]===c?"correct":"wrong"):(i===typed.length?"current":"");
-return `<span class="${cls}">${c===" "?"&nbsp;":esc(c)}</span>`;
+return `<span class="${cls}" data-index="${i}">${c===" "?"&nbsp;":esc(c)}</span>`;
 }).join("");
+if($("mode").value!=="blind"){
+let current=$("target").querySelector(".current");
+if(current){let box=$("target"),top=current.offsetTop-box.offsetTop,bottom=top+current.offsetHeight;
+if(top<box.scrollTop)box.scrollTop=top-12;
+else if(bottom>box.scrollTop+box.clientHeight)box.scrollTop=bottom-box.clientHeight+12;
+}
+}
 }
 function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function calculate(){
@@ -297,7 +313,7 @@ if(!started){started=true;startTime=Date.now();timer=setInterval(tick,1000)}
 let typed=$("typing").value;
 let i=typed.length-1;
 if(i>=0){
-if(typed[i]!==target[i]){errorsByKey[typed[i]]=(errorsByKey[typed[i]]||0)+1;beep(false)}
+if(typed[i]!==target[i]){let expected=target[i].toLowerCase();if(/[a-z0-9]/.test(expected))errorsByKey[expected]=(errorsByKey[expected]||0)+1;beep(false)}
 else beep(true);
 }
 renderTarget();
@@ -317,7 +333,7 @@ if(!paused){paused=true;clearInterval(timer);$("typing").disabled=true;$("status
 else{
 paused=false;$("typing").disabled=false;
 startTime=Date.now()-((Number($("duration").value)-remaining)*1000);
-timer=setInterval(tick,1000);$("typing").focus();$("status").textContent="Resumed.";
+timer=setInterval(tick,1000);$("typing").focus({preventScroll:true});$("status").textContent="Resumed.";
 }
 }
 function finish(){
@@ -327,10 +343,12 @@ let s=calculate();
 let result={
 name:localStorage.getItem("tsUser")||"Guest",
 wpm:s.wpm,accuracy:s.accuracy,errors:s.wrong,
-date:new Date().toLocaleString(),day:new Date().toISOString().slice(0,10)
+date:new Date().toLocaleString(),day:localDateKey(new Date())
 };
 last=result;history.push(result);history=history.slice(-50);
 localStorage.setItem("tsHistory",JSON.stringify(history));
+Object.entries(errorsByKey).forEach(([key,count])=>{weakKeyStats[key]=(weakKeyStats[key]||0)+count;});
+localStorage.setItem("tsWeakKeys",JSON.stringify(weakKeyStats));
 if(!completed.includes(result.day)){
 completed.push(result.day);
 localStorage.setItem("tsDays",JSON.stringify(completed));
@@ -340,14 +358,32 @@ coach(s);renderTarget();renderChallenge();
 }
 function coach(s){
 let tips=[];
-tips.push(s.accuracy>=95?"Excellent accuracy! Keep it consistent.":"Try slowing down to improve accuracy.");
-tips.push(s.wpm<25?"Practice common words to build speed.":s.wpm<50?"Good progress. Aim for a steady rhythm.":"Strong speed! Keep your accuracy high.");
-tips.push("Keep your wrists relaxed and use the correct fingers.");
+if(s.accuracy>=97)tips.push("Excellent accuracy. Keep the same steady rhythm.");
+else if(s.accuracy>=90)tips.push("Good accuracy. Slow down slightly on difficult words.");
+else tips.push("Accuracy needs attention. Aim for correct keystrokes before increasing speed.");
+if(s.wpm<25)tips.push("Build a steady foundation with short, familiar sentences.");
+else if(s.wpm<45)tips.push("Good progress. Try to keep an even pace without rushing.");
+else tips.push("Strong typing speed. Maintain accuracy as you increase your pace.");
+tips.push("Keep your wrists relaxed and use the home-row finger positions.");
+let ranked=Object.entries(weakKeyStats).sort((a,b)=>b[1]-a[1]).slice(0,5);
 $("coach").innerHTML=tips.map(t=>`<div class="item">💡 ${t}</div>`).join("");
+$("coachScore").textContent=`This test: ${s.wpm} WPM • ${s.accuracy}% accuracy • ${s.wrong} errors. Weak keys are ranked from your saved practice history on this device.`;
+$("weakKeys").innerHTML=ranked.length?ranked.map(([key,count])=>`<span class="weak-key">${esc(key.toUpperCase())} · ${count}</span>`).join(""):'<span class="small">No weak keys recorded yet. Keep practising!</span>';
+}
+function practiceWeakKeys(){
+let ranked=Object.entries(weakKeyStats).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>x[0]);
+if(!ranked.length){alert("Complete a typing test first so TypeSprint can find your weak keys.");return;}
+let words={a:"amazing",b:"bright",c:"careful",d:"dedicated",e:"excellent",f:"focus",g:"great",h:"helpful",i:"inside",j:"journey",k:"keyboard",l:"learning",m:"memory",n:"number",o:"orange",p:"practice",q:"quick",r:"rhythm",s:"steady",t:"typing",u:"useful",v:"vivid",w:"wonder",x:"extra",y:"young",z:"zero"};
+let drill=[];
+ranked.forEach(key=>{if(words[key])drill.push(words[key],words[key],`type ${words[key]} slowly`);});
+let fallback=ranked.map(k=>k.toUpperCase()).join(" ");
+custom=(drill.join(". ")+". "+fallback+". Repeat slowly and accurately.").trim();
+tab("test");$("mode").value="normal";$("level").value="easy";start();
+$("status").textContent="Weak-key practice started. Focus on accuracy and relaxed typing.";
 }
 function review(){
 let entries=Object.entries(errorsByKey).sort((a,b)=>b[1]-a[1]);
-$("mistakes").innerHTML=entries.length?entries.map(([k,v])=>`<div class="item">Key <b>${esc(k)}</b>: ${v} mistake(s)</div>`).join(""):"No mistakes recorded in this test.";
+$("mistakes").innerHTML=entries.length?entries.map(([k,v])=>`<div class="item">Expected key <b>${esc(k.toUpperCase())}</b>: ${v} mistake(s)</div>`).join(""):"No mistakes recorded in this test.";
 }
 function finger(ch){
 if(!ch)return;
@@ -364,11 +400,11 @@ else if(c===" ")f="Thumb";
 $("finger").textContent=`Key "${ch}" — ${f}`;
 document.querySelectorAll(".key").forEach(k=>k.classList.toggle("active",k.textContent.toLowerCase()===c));
 }
-function renderKeyboard(){
+    function renderKeyboard(){
 $("keyboard").innerHTML="QWERTYUIOPASDFGHJKLZXCVBNM".split("").map(k=>`<div class="key">${k}</div>`).join("");
 }
 function renderChallenge(){
-let count=completed.length%8;
+let count=Math.min(7,completed.length);
 $("challengeCount").textContent=Math.min(7,count)+"/7";
 $("challengeBest").textContent=history.length?Math.max(...history.map(x=>x.wpm)):0;
 $("challengeDays").innerHTML=Array.from({length:7},(_,i)=>{
@@ -401,7 +437,7 @@ let name=localStorage.getItem("tsUser")||"Guest";
 $("profileInfo").textContent=`Name: ${name} | Tests completed: ${history.length} | Best WPM: ${history.length?Math.max(...history.map(x=>x.wpm)):0}`;
 let days=Array.from({length:28},(_,i)=>{
 let d=new Date();d.setDate(d.getDate()-(27-i));
-let key=d.toISOString().slice(0,10);
+let key=localDateKey(d);
 return `<div class="day ${completed.includes(key)?"done":""}">${d.getDate()}<br>${completed.includes(key)?"✓":"·"}</div>`;
 });
 $("calendar").innerHTML=days.join("");
